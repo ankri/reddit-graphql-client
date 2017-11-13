@@ -1,42 +1,51 @@
-import React, { Component } from 'react';
-import glamorous from 'glamorous';
-import * as glamor from 'glamor';
-import Api from './api/Api';
-import Subreddit from './subreddit/Subreddit';
+import React, { Component } from "react";
+import glamorous from "glamorous";
+import * as glamor from "glamor";
+import Api from "./api/Api";
+import Subreddit from "./subreddit/Subreddit";
 
 const heartBeatAnimation = glamor.css.keyframes({
-  '0%': {
+  "0%": {
     transform: `scale( .75 )`
   },
-  '20%': {
+  "20%": {
     transform: `scale( 1 )`
   },
-  '40%': {
+  "40%": {
     transform: `scale( .75 )`
   },
-  '60%': {
+  "60%": {
     transform: `scale( 1 )`
   },
-  '80%': {
+  "80%": {
     transform: `scale( .75 )`
   },
-  '100%': {
+  "100%": {
     transform: `scale( .75 )`
   }
 });
 
 const Loading = glamorous.div({
-  display: 'flex',
-  height: '85vh',
-  justifyContent: 'center',
-  alignItems: 'center',
-  width: '100vw',
+  display: "flex",
+  height: "85vh",
+  justifyContent: "center",
+  alignItems: "center",
+  width: "100vw",
   animation: `${heartBeatAnimation} 2s infinite`
+});
+
+const Error = glamorous.div({
+  display: "flex",
+  height: "85vh",
+  justifyContent: "center",
+  flexDirection: "column",
+  alignItems: "center",
+  width: "100vw"
 });
 
 class App extends Component {
   state = {
-    subredditName: 'pics'
+    subredditName: "pics"
   };
 
   changeSubreddit = subredditName => {
@@ -48,7 +57,7 @@ class App extends Component {
   render() {
     return (
       <Api subredditName={this.state.subredditName}>
-        {({ isError, isLoading, subreddit }) => {
+        {({ isError, isLoading, subreddit, error }) => {
           if (isLoading) {
             return (
               <Loading>
@@ -56,7 +65,13 @@ class App extends Component {
               </Loading>
             );
           } else if (isError) {
-            return <h1>Error</h1>;
+            console.log(error);
+            return (
+              <Error>
+                <h1>Error</h1>
+                <p>{error.toString()}</p>
+              </Error>
+            );
           } else {
             return (
               <Subreddit
