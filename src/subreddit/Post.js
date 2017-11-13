@@ -4,18 +4,14 @@ import glamorous from "glamorous";
 
 const PostWrapper = glamorous.div(
   {
-    border: "0.25rem solid #000",
-    padding: "1.5rem",
-    marginBottom: "2rem",
-    ":first-child": {
-      marginTop: "2rem"
-    }
+    borderBottom: "1rem solid #000",
+    padding: "1.5rem"
   },
   ({ imageColors }) => {
     if (imageColors) {
       return {
-        backgroundColor: imageColors.vibrant,
-        borderColor: imageColors.vibrantDark || imageColors.vibrant
+        backgroundColor: imageColors.mutedLight,
+        borderColor: imageColors.mutedDark || imageColors.vibrant
       };
     } else {
       return {
@@ -25,15 +21,18 @@ const PostWrapper = glamorous.div(
   }
 );
 
-const PostTitle = glamorous.h2(
+const PostTitle = glamorous.h1(
   {
     margin: 0,
-    marginBottom: "1rem"
+    marginBottom: "1rem",
+    textAlign: "center"
   },
   ({ imageColors }) => {
     if (imageColors) {
       return {
-        color: imageColors.mutedDark || imageColors.muted
+        color:
+          imageColors.vibrant || imageColors.mutedDark || imageColors.muted,
+        "-webkit-text-stroke": "1px #000"
       };
     } else {
       return {
@@ -53,17 +52,37 @@ const PostContent = glamorous.div({
 const PostImage = glamorous.img(
   {
     maxWidth: "100%",
-    maxHeight: "200vh"
+    maxHeight: "200vh",
+    borderRadius: "1rem"
   },
   ({ imageColors }) => {
     if (imageColors) {
       return {
-        border: `0.25rem solid ${imageColors.vibrantLight ||
-          imageColors.vibrantDark}`
+        border: `0.5rem solid ${imageColors.muted || imageColors.vibrantDark}`
       };
     }
 
     return {};
+  }
+);
+
+const ColorDemoContainer = glamorous.div({
+  display: "flex",
+  flexDirection: "row",
+  border: "2px solid #000"
+});
+
+const ColorDemo = glamorous.div(
+  {
+    width: "2rem",
+    height: "2rem"
+  },
+  ({ imageColors, color }) => {
+    if (imageColors) {
+      return {
+        backgroundColor: imageColors[color]
+      };
+    }
   }
 );
 
@@ -96,6 +115,8 @@ class Post extends Component {
         isVideo = post.isVideo;
     }
 
+    const doShowColorDemo = false;
+
     return (
       <PostWrapper imageColors={post.imageColors}>
         <PostContent>
@@ -108,6 +129,40 @@ class Post extends Component {
               alt={post.title}
               imageColors={post.imageColors}
             />
+          )}
+          {doShowColorDemo && (
+            <ColorDemoContainer>
+              <ColorDemo
+                imageColors={post.imageColors}
+                color="vibrant"
+                title="vibrant"
+              />
+              <ColorDemo
+                imageColors={post.imageColors}
+                color="vibrantLight"
+                title="vibrantLight"
+              />
+              <ColorDemo
+                imageColors={post.imageColors}
+                color="vibrantDark"
+                title="vibrantDark"
+              />
+              <ColorDemo
+                imageColors={post.imageColors}
+                color="muted"
+                title="muted"
+              />
+              <ColorDemo
+                imageColors={post.imageColors}
+                color="mutedLight"
+                title="mutedLight"
+              />
+              <ColorDemo
+                imageColors={post.imageColors}
+                color="mutedDark"
+                title="mutedDark"
+              />
+            </ColorDemoContainer>
           )}
         </PostContent>
       </PostWrapper>

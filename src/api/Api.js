@@ -9,7 +9,7 @@ const fetchSubreddit = name =>
       Accept: "application/json"
     },
     body: JSON.stringify({
-      query: `query Subreddit($name: String!) {
+      query: `query Subreddit($name: String!, $color: String) {
       subreddit(name: $name) {
         name,
         headerImage {
@@ -32,7 +32,8 @@ const fetchSubreddit = name =>
               vibrantLight,
               muted,
               mutedDark,
-              mutedLight
+              mutedLight,
+              titleText(color: $color)
             },
             id,
             title,
@@ -59,7 +60,8 @@ const fetchSubreddit = name =>
       }
     }`,
       variables: {
-        name
+        name,
+        color: "LightMuted"
       }
     })
   });

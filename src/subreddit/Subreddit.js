@@ -1,16 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import glamorous from 'glamorous';
-import Headroom from 'react-headroom';
+import React from "react";
+import PropTypes from "prop-types";
+import glamorous from "glamorous";
+import Headroom from "react-headroom";
 
-import Post from './Post';
+import Post from "./Post";
 
 const Navbar = glamorous.div({
-  padding: '1.5rem',
-  paddingTop: '0.5rem',
-  paddingBottom: '0.5rem',
-  borderBottom: '1px solid #000',
-  backgroundColor: '#FFF'
+  padding: "1.5rem",
+  paddingTop: "0.5rem",
+  paddingBottom: "0.5rem",
+  borderBottom: "1px solid #000",
+  backgroundColor: "#FFF"
 });
 
 const NavbarHeading = glamorous.h1({
@@ -19,21 +19,21 @@ const NavbarHeading = glamorous.h1({
 
 const HeaderImage = glamorous.img({
   marginBottom: 0,
-  verticalAlign: 'middle',
-  marginRight: '1rem'
+  verticalAlign: "middle",
+  marginRight: "1rem"
 });
 
 const Content = glamorous.div({
-  margin: '0 auto',
-  width: '80vw'
+  // margin: '0 auto',
+  width: "100vw"
 });
 
 const ChangeSubredditButton = glamorous.button({
-  marginLeft: '1rem',
-  fontSize: '1.5rem',
-  backgroundColor: '#FFF',
-  cursor: 'pointer',
-  border: '1px solid #000'
+  marginLeft: "1rem",
+  fontSize: "1.5rem",
+  backgroundColor: "#FFF",
+  cursor: "pointer",
+  border: "1px solid #000"
 });
 
 const Subreddit = ({ subreddit, changeSubreddit }) => {
@@ -44,11 +44,11 @@ const Subreddit = ({ subreddit, changeSubreddit }) => {
           <NavbarHeading>
             {subreddit.headerImage && (
               <HeaderImage src={subreddit.headerImage.url} />
-            )}{' '}
+            )}{" "}
             r/{subreddit.name}
             <ChangeSubredditButton
               type="button"
-              onClick={() => changeSubreddit('random')}
+              onClick={() => changeSubreddit("random")}
             >
               random
             </ChangeSubredditButton>
