@@ -1,11 +1,17 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import glamorous from "glamorous";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import glamorous from 'glamorous';
+import TimeAgo from 'timeago-react';
 
 const PostWrapper = glamorous.div(
   {
-    borderBottom: "1rem solid #000",
-    padding: "1.5rem"
+    minHeight: '100vh',
+    maxHeigth: '100vh',
+    borderBottom: '1rem solid #000',
+    padding: '1.5rem',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   ({ imageColors }) => {
     if (imageColors) {
@@ -15,45 +21,44 @@ const PostWrapper = glamorous.div(
       };
     } else {
       return {
-        backgroundColor: "#000"
+        backgroundColor: '#000'
       };
     }
   }
 );
 
-const PostTitle = glamorous.h1(
+const PostTitle = glamorous.h3(
   {
     margin: 0,
-    marginBottom: "1rem",
-    textAlign: "center"
+    marginBottom: '1rem',
+    textAlign: 'center'
   },
   ({ imageColors }) => {
     if (imageColors) {
       return {
-        color:
-          imageColors.vibrant || imageColors.mutedDark || imageColors.muted,
-        "-webkit-text-stroke": "1px #000"
+        color: imageColors.titleColor
+        // '-webkit-text-stroke': '1px #000'
       };
     } else {
       return {
-        color: "#FFF"
+        color: '#FFF'
       };
     }
   }
 );
 
 const PostContent = glamorous.div({
-  display: "flex",
-  padding: "1rem",
-  alignItems: "center",
-  flexDirection: "column"
+  display: 'flex',
+  padding: '1rem',
+  alignItems: 'center',
+  flexDirection: 'column'
 });
 
 const PostImage = glamorous.img(
   {
-    maxWidth: "100%",
-    maxHeight: "200vh",
-    borderRadius: "1rem"
+    maxWidth: '100%',
+    maxHeight: '80vh',
+    borderRadius: '1rem'
   },
   ({ imageColors }) => {
     if (imageColors) {
@@ -66,16 +71,49 @@ const PostImage = glamorous.img(
   }
 );
 
+const PostFooter = glamorous.div({
+  display: 'flex',
+  flexDirection: 'row'
+});
+
 const ColorDemoContainer = glamorous.div({
-  display: "flex",
-  flexDirection: "row",
-  border: "2px solid #000"
+  display: 'flex',
+  flexDirection: 'row',
+  border: '2px solid #000'
+});
+
+const AuthorLink = glamorous.a(
+  {
+    fontFamily: "'Open Sans', sans-serif",
+    fontWeight: 800,
+    marginLeft: '0.3rem'
+  },
+  ({ imageColors }) => {
+    if (imageColors) {
+      return {
+        color: imageColors.vibrantDark
+      };
+    }
+  }
+);
+
+const Score = glamorous.span({}, ({ imageColors }) => {
+  if (imageColors) {
+    return {
+      color: imageColors.mutedDark
+    };
+  }
+});
+
+const LinkWrapper = glamorous.div({
+  marginLeft: '0.3rem',
+  marginRight: '0.3rem'
 });
 
 const ColorDemo = glamorous.div(
   {
-    width: "2rem",
-    height: "2rem"
+    width: '2rem',
+    height: '2rem'
   },
   ({ imageColors, color }) => {
     if (imageColors) {
@@ -97,17 +135,17 @@ class Post extends Component {
     let isVideo;
 
     switch (post.domain) {
-      case "gfycat.com":
+      case 'gfycat.com':
         url =
-          post.url.replace("https://gfycat.com/", "https://giant.gfycat.com/") +
-          ".mp4";
+          post.url.replace('https://gfycat.com/', 'https://giant.gfycat.com/') +
+          '.mp4';
         isVideo = true;
         break;
-      case "i.imgur.com":
-        isVideo = post.url.includes(".gifv");
+      case 'i.imgur.com':
+        isVideo = post.url.includes('.gifv');
         url = post.url;
         if (isVideo) {
-          url = post.url.replace(".gifv", ".mp4");
+          url = post.url.replace('.gifv', '.mp4');
         }
         break;
       default:
@@ -118,9 +156,8 @@ class Post extends Component {
     const doShowColorDemo = false;
 
     return (
-      <PostWrapper imageColors={post.imageColors}>
+      <PostWrapper imageColors={post.imageColors} id={post.id}>
         <PostContent>
-          <PostTitle imageColors={post.imageColors}>{post.title}</PostTitle>
           {isVideo ? (
             <video src={url} autoPlay={false} controls loop muted />
           ) : (
@@ -130,6 +167,20 @@ class Post extends Component {
               imageColors={post.imageColors}
             />
           )}
+          <PostTitle imageColors={post.imageColors}>{post.title}</PostTitle>
+          <PostFooter>
+            <TimeAgo datetime={post.createdISO} />
+            <LinkWrapper>
+              by
+              <AuthorLink imageColors={post.imageColors}>
+                {post.author.name}
+              </AuthorLink>
+            </LinkWrapper>
+            <div>
+              Score: <Score imageColors={post.imageColors}>{post.score}</Score>
+            </div>
+          </PostFooter>
+
           {doShowColorDemo && (
             <ColorDemoContainer>
               <ColorDemo

@@ -1,12 +1,12 @@
-import { Component } from "react";
-import PropTypes from "prop-types";
+import { Component } from 'react';
+import PropTypes from 'prop-types';
 
 const fetchSubreddit = name =>
-  fetch("/graphql", {
-    method: "POST",
+  fetch('/graphql', {
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json"
+      'Content-Type': 'application/json',
+      Accept: 'application/json'
     },
     body: JSON.stringify({
       query: `query Subreddit($name: String!, $color: String) {
@@ -37,7 +37,7 @@ const fetchSubreddit = name =>
             },
             id,
             title,
-            created,
+            createdISO,
             score,
             url,
             preview {
@@ -48,12 +48,7 @@ const fetchSubreddit = name =>
               }
             },
             author {
-              name,
-              posts{
-                id,
-                url,
-                title
-              }
+              name
             }
           }
         }
@@ -61,7 +56,7 @@ const fetchSubreddit = name =>
     }`,
       variables: {
         name,
-        color: "LightMuted"
+        color: 'LightMuted'
       }
     })
   });
