@@ -42,7 +42,8 @@ const fetchSubreddit = name =>
             score,
             url,
             media {
-              url
+              url,
+              album
             },
             author {
               name
@@ -83,6 +84,7 @@ class Api extends Component {
         try {
           const response = await fetchSubreddit(subredditName);
           const json = await response.json();
+          console.log(json);
           const subreddit = json.data.subreddit;
           this.setState({
             isLoading: false,
