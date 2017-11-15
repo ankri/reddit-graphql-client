@@ -22,10 +22,11 @@ const fetchSubreddit = name =>
           width,
           height
         },
-        listings {
+        media {
           hot {
             domain,
             isVideo,
+            isAlbum,
             imageColors {
               vibrant,
               vibrantDark,
@@ -40,12 +41,8 @@ const fetchSubreddit = name =>
             createdISO,
             score,
             url,
-            preview {
-              images {
-                url,
-                width,
-                height
-              }
+            media {
+              url
             },
             author {
               name

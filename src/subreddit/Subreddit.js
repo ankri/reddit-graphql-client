@@ -44,6 +44,16 @@ class Subreddit extends Component {
     changeSubreddit: PropTypes.func
   };
 
+  state = {
+    isError: false
+  };
+
+  componentDidCatch() {
+    this.setState({
+      isError: true
+    });
+  }
+
   render() {
     const { subreddit, changeSubreddit } = this.props;
     return (
@@ -64,12 +74,14 @@ class Subreddit extends Component {
             </NavbarHeading>
           </Navbar>
         </Headroom>
-        <Content>
-          <KeyboardNavigation posts={subreddit.listings.hot} />
-          {subreddit.listings.hot.map(post => (
-            <Post post={post} key={post.id} />
-          ))}
-        </Content>
+        {!this.state.isError && (
+          <Content>
+            <KeyboardNavigation posts={subreddit.media.hot} />
+            {subreddit.media.hot.map(post => (
+              <Post post={post} key={post.id} />
+            ))}
+          </Content>
+        )}
       </div>
     );
   }
