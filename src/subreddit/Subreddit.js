@@ -30,6 +30,15 @@ const Content = glamorous.div({
   width: '100vw'
 });
 
+const NoContent = glamorous.div({
+  display: 'flex',
+  height: '85vh',
+  justifyContent: 'center',
+  flexDirection: 'column',
+  alignItems: 'center',
+  width: '100vw'
+});
+
 const ChangeSubredditButton = glamorous.button({
   marginLeft: '1rem',
   fontSize: '1.5rem',
@@ -56,6 +65,8 @@ class Subreddit extends Component {
 
   render() {
     const { subreddit, changeSubreddit } = this.props;
+    const posts = subreddit.media.hot;
+
     return (
       <div>
         <Headroom>
@@ -76,10 +87,19 @@ class Subreddit extends Component {
         </Headroom>
         {!this.state.isError && (
           <Content>
-            <KeyboardNavigation posts={subreddit.media.hot} />
-            {subreddit.media.hot.map(post => (
-              <Post post={post} key={post.id} />
-            ))}
+            <KeyboardNavigation posts={posts} />
+            {posts.map(post => <Post post={post} key={post.id} />)}
+            {posts.length === 0 && (
+              <NoContent>
+                <h1>No posts found</h1>
+                <ChangeSubredditButton
+                  type="button"
+                  onClick={() => changeSubreddit('random')}
+                >
+                  Load random subreddit
+                </ChangeSubredditButton>
+              </NoContent>
+            )}
           </Content>
         )}
       </div>
