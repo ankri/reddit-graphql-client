@@ -34,6 +34,7 @@ const PostTitle = glamorous.h3(
     margin: 0,
     marginBottom: '1rem',
     textAlign: 'center',
+    maxWidth: '90vw',
     width: '30em'
   },
   ({ imageColors }) => {
@@ -59,7 +60,7 @@ const PostContent = glamorous.div({
 
 const PostImage = glamorous.img(
   {
-    maxWidth: '100%',
+    maxWidth: '90vw',
     maxHeight: '80vh',
     borderRadius: '1rem'
   },
