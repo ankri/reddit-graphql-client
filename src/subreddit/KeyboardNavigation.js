@@ -10,7 +10,7 @@ class KeyboardNavigation extends Component {
     super(props);
 
     this.state = {
-      selected: props.posts[0].id,
+      selected: (props.posts && props.posts[0] && props.posts[0].id) || '',
       postPositions: [],
       disableScroll: false
     };
