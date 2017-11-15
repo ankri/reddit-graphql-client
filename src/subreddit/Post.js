@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import glamorous from 'glamorous';
 import TimeAgo from 'timeago-react';
+import { Player, BigPlayButton, ControlBar } from 'video-react';
+import 'video-react/dist/video-react.css';
 
 const PostWrapper = glamorous.div(
   {
@@ -31,7 +33,8 @@ const PostTitle = glamorous.h3(
   {
     margin: 0,
     marginBottom: '1rem',
-    textAlign: 'center'
+    textAlign: 'center',
+    width: '30em'
   },
   ({ imageColors }) => {
     if (imageColors) {
@@ -105,10 +108,12 @@ const Score = glamorous.span({}, ({ imageColors }) => {
   }
 });
 
-const LinkWrapper = glamorous.div({
+const Divider = glamorous.span({
   marginLeft: '0.3rem',
   marginRight: '0.3rem'
 });
+
+const LinkWrapper = glamorous.div({});
 
 const ColorDemo = glamorous.div(
   {
@@ -131,35 +136,18 @@ class Post extends Component {
 
   render() {
     const { post } = this.props;
-    let url;
-    let isVideo;
-
-    switch (post.domain) {
-      case 'gfycat.com':
-        url =
-          post.url.replace('https://gfycat.com/', 'https://giant.gfycat.com/') +
-          '.mp4';
-        isVideo = true;
-        break;
-      case 'i.imgur.com':
-        isVideo = post.url.includes('.gifv');
-        url = post.url;
-        if (isVideo) {
-          url = post.url.replace('.gifv', '.mp4');
-        }
-        break;
-      default:
-        url = post.url;
-        isVideo = post.isVideo;
-    }
-
     const doShowColorDemo = false;
+    const url = post.media.url;
+    const isVideo = post.isVideo;
 
     return (
       <PostWrapper imageColors={post.imageColors} id={post.id}>
         <PostContent>
           {isVideo ? (
-            <video src={url} autoPlay={false} controls loop muted />
+            <Player src={url} fluid>
+              <BigPlayButton position="center" />
+              <ControlBar autoHide={false} />
+            </Player>
           ) : (
             <PostImage
               src={url}
@@ -170,12 +158,14 @@ class Post extends Component {
           <PostTitle imageColors={post.imageColors}>{post.title}</PostTitle>
           <PostFooter>
             <TimeAgo datetime={post.createdISO} />
+            <Divider>&mdash;</Divider>
             <LinkWrapper>
               by
               <AuthorLink imageColors={post.imageColors}>
                 {post.author.name}
               </AuthorLink>
             </LinkWrapper>
+            <Divider>&mdash;</Divider>
             <div>
               Score: <Score imageColors={post.imageColors}>{post.score}</Score>
             </div>
