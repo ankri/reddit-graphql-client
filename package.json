@@ -4,9 +4,13 @@
   "private": true,
   "proxy": "http://localhost:4000",
   "dependencies": {
+    "apollo-client-preset": "^1.0.3",
     "glamor": "^2.20.40",
     "glamorous": "^4.11.0",
+    "graphql": "^0.11.7",
+    "graphql-tag": "^2.5.0",
     "react": "^16.1.0",
+    "react-apollo": "^2.0.1",
     "react-dom": "^16.1.0",
     "react-headroom": "^2.2.2",
     "react-markdown": "^2.5.1",

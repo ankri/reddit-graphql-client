@@ -11,7 +11,9 @@ const Navbar = glamorous.div({
   paddingTop: '0.5rem',
   paddingBottom: '0.5rem',
   borderBottom: '1px solid #000',
-  backgroundColor: '#FFF'
+  backgroundColor: '#FFF',
+  display: 'flex',
+  flexDirection: 'row'
 });
 
 const NavbarHeading = glamorous.h1({
@@ -47,6 +49,12 @@ const ChangeSubredditButton = glamorous.button({
   border: '1px solid #000'
 });
 
+const TextInput = glamorous.input({
+  marginLeft: '1rem',
+  border: '1px solid #000',
+  padding: '0.5rem'
+});
+
 class Subreddit extends Component {
   static propTypes = {
     subreddit: PropTypes.object,
@@ -63,26 +71,35 @@ class Subreddit extends Component {
     });
   }
 
+  goToSubreddit = event => {
+    event.preventDefault();
+    const newSubreddit = event.target.elements['subreddit'].value;
+    this.props.changeSubreddit(newSubreddit);
+  };
+
   render() {
     const { subreddit, changeSubreddit } = this.props;
     const posts = subreddit.media.hot;
 
     return (
       <div>
-        <Headroom>
+        <Headroom disable>
           <Navbar>
             <NavbarHeading>
               {subreddit.headerImage && (
                 <HeaderImage src={subreddit.headerImage.url} />
               )}{' '}
               r/{subreddit.name}
-              <ChangeSubredditButton
-                type="button"
-                onClick={() => changeSubreddit('random')}
-              >
-                random
-              </ChangeSubredditButton>
             </NavbarHeading>
+            <ChangeSubredditButton
+              type="button"
+              onClick={() => changeSubreddit('random')}
+            >
+              random
+            </ChangeSubredditButton>
+            <form onSubmit={this.goToSubreddit}>
+              <TextInput placeholder="go to subreddit" name="subreddit" />
+            </form>
           </Navbar>
         </Headroom>
         {!this.state.isError && (

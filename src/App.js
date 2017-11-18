@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import glamorous from 'glamorous';
 import * as glamor from 'glamor';
 import Api from './api/Api';
+import { query } from './api/Api';
 import Subreddit from './subreddit/Subreddit';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 
 const heartBeatAnimation = glamor.css.keyframes({
   '0%': {
@@ -43,45 +46,70 @@ const Error = glamorous.div({
   width: '100vw'
 });
 
+const SubredditLoader = ({
+  data: { loading, error, subreddit },
+  changeSubreddit
+}) => {
+  if (loading) {
+    return (
+      <Loading>
+        <h1>Loading</h1>
+      </Loading>
+    );
+  } else if (error) {
+    console.log(error);
+    return (
+      <Error>
+        <h1>Error</h1>
+        <p>{error.toString()}</p>
+      </Error>
+    );
+  } else {
+    console.log(subreddit);
+    return (
+      <Subreddit subreddit={subreddit} changeSubreddit={changeSubreddit} />
+    );
+  }
+};
+
+const SubredditQuery = gql(query);
+const SubredditWithData = graphql(SubredditQuery, {
+  options: ({ subredditName }) => {
+    return {
+      variables: {
+        name: subredditName,
+        color: 'MutedLight'
+      }
+    };
+  }
+})(SubredditLoader);
+
 class App extends Component {
   state = {
     subredditName: 'pics'
   };
 
-  changeSubreddit = subredditName => {
-    this.setState({
-      subredditName
-    });
+  changeSubreddit = async subredditName => {
+    if (subredditName === 'random' || subredditName === 'randnsfw') {
+      const response = await fetch(`/${subredditName}`);
+      const json = await response.json();
+      console.log(json.name);
+      this.setState({
+        subredditName: json.name || subredditName
+      });
+    } else {
+      this.setState({
+        subredditName
+      });
+    }
   };
 
   render() {
     return (
-      <Api subredditName={this.state.subredditName}>
-        {({ isError, isLoading, subreddit, error }) => {
-          if (isLoading) {
-            return (
-              <Loading>
-                <h1>Loading</h1>
-              </Loading>
-            );
-          } else if (isError) {
-            console.log(error);
-            return (
-              <Error>
-                <h1>Error</h1>
-                <p>{error.toString()}</p>
-              </Error>
-            );
-          } else {
-            return (
-              <Subreddit
-                subreddit={subreddit}
-                changeSubreddit={this.changeSubreddit}
-              />
-            );
-          }
-        }}
-      </Api>
+      <SubredditWithData
+        subredditName={this.state.subredditName}
+        changeSubreddit={this.changeSubreddit}
+      />
     );
   }
 }

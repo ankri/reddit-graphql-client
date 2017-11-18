@@ -130,6 +130,13 @@ const ColorDemo = glamorous.div(
   }
 );
 
+const Album = glamorous.div({
+  display: 'flex',
+  flexDirection: 'row',
+  overflowX: 'auto',
+  maxWidth: '100vw'
+});
+
 class Post extends Component {
   static propTypes = {
     post: PropTypes.object.isRequired
@@ -140,6 +147,7 @@ class Post extends Component {
     const doShowColorDemo = false;
     const url = post.media.url;
     const isVideo = post.isVideo;
+    const isAlbum = post.isAlbum;
 
     return (
       <PostWrapper imageColors={post.imageColors} id={post.id}>
@@ -149,6 +157,12 @@ class Post extends Component {
               <BigPlayButton position="center" />
               <ControlBar autoHide={false} />
             </Player>
+          ) : isAlbum ? (
+            <Album>
+              {post.media.album.map((url, index) => (
+                <PostImage src={url} key={`${post.id}-${index}`} />
+              ))}
+            </Album>
           ) : (
             <PostImage
               src={url}

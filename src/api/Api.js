@@ -1,6 +1,50 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 
+export const query = `query Subreddit($name: String!, $color: String) {
+  subreddit(name: $name) {
+    name,
+    headerImage {
+      url,
+      width,
+      height
+    },
+    headerIcon {
+      url,
+      width,
+      height
+    },
+    media {
+      hot {
+        domain,
+        isVideo,
+        isAlbum,
+        imageColors {
+          vibrant,
+          vibrantDark,
+          vibrantLight,
+          muted,
+          mutedDark,
+          mutedLight,
+          titleText(color: $color)
+        },
+        id,
+        title,
+        createdISO,
+        score,
+        url,
+        media {
+          url,
+          album
+        },
+        author {
+          name
+        }
+      }
+    }
+  }
+}`;
+
 const fetchSubreddit = name =>
   fetch('/graphql', {
     method: 'POST',
@@ -9,49 +53,7 @@ const fetchSubreddit = name =>
       Accept: 'application/json'
     },
     body: JSON.stringify({
-      query: `query Subreddit($name: String!, $color: String) {
-      subreddit(name: $name) {
-        name,
-        headerImage {
-          url,
-          width,
-          height
-        },
-        headerIcon {
-          url,
-          width,
-          height
-        },
-        media {
-          hot {
-            domain,
-            isVideo,
-            isAlbum,
-            imageColors {
-              vibrant,
-              vibrantDark,
-              vibrantLight,
-              muted,
-              mutedDark,
-              mutedLight,
-              titleText(color: $color)
-            },
-            id,
-            title,
-            createdISO,
-            score,
-            url,
-            media {
-              url,
-              album
-            },
-            author {
-              name
-            }
-          }
-        }
-      }
-    }`,
+      query: query,
       variables: {
         name,
         color: 'LightMuted'
