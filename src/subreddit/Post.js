@@ -145,31 +145,30 @@ class Post extends Component {
   render() {
     const { post } = this.props;
     const doShowColorDemo = false;
-    const url = post.media.url;
-    const isVideo = post.isVideo;
-    const isAlbum = post.isAlbum;
+
+    console.log(post.media);
 
     return (
       <PostWrapper imageColors={post.imageColors} id={post.id}>
         <PostContent>
-          {isVideo ? (
-            <Player src={url} fluid>
-              <BigPlayButton position="center" />
-              <ControlBar autoHide={false} />
-            </Player>
-          ) : isAlbum ? (
-            <Album>
-              {post.media.album.map((url, index) => (
-                <PostImage src={url} key={`${post.id}-${index}`} />
-              ))}
-            </Album>
-          ) : (
-            <PostImage
-              src={url}
-              alt={post.title}
-              imageColors={post.imageColors}
-            />
+          {/* <Album> */}
+          {post.media.map(
+            (media, index) =>
+              media ? (
+                media.isVideo ? (
+                  <Player src={media.url} fluid key={media.id}>
+                    <BigPlayButton position="center" />
+                    <ControlBar autoHide={false} />
+                  </Player>
+                ) : (
+                  <PostImage src={media.url} key={media.id} />
+                )
+              ) : (
+                <div />
+              )
           )}
+          {/* </Album> */}
+
           <PostTitle imageColors={post.imageColors}>{post.title}</PostTitle>
           <PostFooter>
             <TimeAgo datetime={post.createdISO} />

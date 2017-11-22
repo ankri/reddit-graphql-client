@@ -16,26 +16,31 @@ export const query = `query Subreddit($name: String!, $color: String) {
     },
     media {
       hot {
-        domain,
-        isVideo,
-        isAlbum,
-        imageColors {
-          vibrant,
-          vibrantDark,
-          vibrantLight,
-          muted,
-          mutedDark,
-          mutedLight,
-          titleText(color: $color)
-        },
         id,
         title,
         createdISO,
         score,
         url,
         media {
-          url,
-          album
+          url
+          height
+          width
+          isVideo
+          id
+          preview {
+            colors {
+              vibrant,
+              vibrantDark,
+              vibrantLight,
+              muted,
+              mutedDark,
+              mutedLight,
+              titleText(color: $color)
+            },
+            height
+            width
+            url
+          }
         },
         author {
           name
