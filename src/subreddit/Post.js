@@ -9,6 +9,8 @@ const PostWrapper = glamorous.div(
   {
     minHeight: '100vh',
     maxHeigth: '100vh',
+    minWidth: '100vw',
+    maxWidth: '100vw',
     borderBottom: '1rem solid #000',
     padding: '1.5rem',
     display: 'flex',
@@ -40,8 +42,10 @@ const PostTitle = glamorous.h3(
   ({ imageColors }) => {
     if (imageColors) {
       return {
-        color: imageColors.titleColor
-        // '-webkit-text-stroke': '1px #000'
+        color:
+          imageColors.bodyText ||
+          imageColors.titleText ||
+          imageColors.vibrantDark
       };
     } else {
       return {
@@ -51,18 +55,70 @@ const PostTitle = glamorous.h3(
   }
 );
 
+const PostTitleLink = glamorous.a({
+  color: 'inherit',
+  background: 'none',
+  ':hover': {
+    backgroundImage:
+      'linear-gradient(5deg,transparent 65%,#0071de 80%,transparent 90%),linear-gradient(165deg,transparent 5%,#0071de 15%,transparent 25%),linear-gradient(165deg,transparent 45%,#0071de 55%,transparent 65%),linear-gradient(15deg,transparent 25%,#0071de 35%,transparent 50%)',
+    backgroundRepeat: 'repeat-x',
+    backgroundSize: '4px 3px',
+    backgroundPosition: '0 90%'
+  }
+});
+
 const PostContent = glamorous.div({
   display: 'flex',
   padding: '1rem',
   alignItems: 'center',
-  flexDirection: 'column'
+  flexDirection: 'column',
+  height: '100%',
+  maxHeight: '100%'
 });
+
+const borders = [
+  {
+    borderTopLeftRadius: '255px 15px',
+    borderTopRightRadius: '15px 225px',
+    borderBottomRightRadius: '225px 15px',
+    borderBottomLeftRadius: '15px 255px'
+  },
+  {
+    borderTopLeftRadius: '125px 25px',
+    borderTopRightRadius: '10px 205px',
+    borderBottomRightRadius: '20px 205px',
+    borderBottomLeftRadius: '185px 25px'
+  },
+  {
+    borderTopLeftRadius: '15px 225px',
+    borderTopRightRadius: '255px 15px',
+    borderBottomRightRadius: '225px 15px',
+    borderBottomLeftRadius: '15px 255px'
+  },
+  {
+    borderTopLeftRadius: '15px 225px',
+    borderTopRightRadius: '55px 150px',
+    borderBottomRightRadius: '25px 115px',
+    borderBottomLeftRadius: '155px 25px'
+  },
+  {
+    borderTopLeftRadius: '250px 15px',
+    borderTopRightRadius: '25px 80px',
+    borderBottomRightRadius: '20px 115px',
+    borderBottomLeftRadius: '15px 105px'
+  },
+  {
+    borderTopLeftRadius: '28px 125px',
+    borderTopRightRadius: '100px 30px',
+    borderBottomRightRadius: '20px 205px',
+    borderBottomLeftRadius: '15px 225px'
+  }
+];
 
 const PostImage = glamorous.img(
   {
-    maxWidth: '90vw',
-    maxHeight: '80vh',
-    borderRadius: '1rem'
+    // maxWidth: '90vw',
+    maxHeight: '80vh'
   },
   ({ imageColors }) => {
     if (imageColors) {
@@ -137,6 +193,28 @@ const Album = glamorous.div({
   maxWidth: '100vw'
 });
 
+const VideoWrapper = glamorous.div({
+  '> .video-react.video-react-fluid': {
+    height: '80vh',
+    width: '80vw',
+    paddingTop: '0 !important'
+  },
+  '> .video-react': {
+    backgroundColor: 'transparent'
+  }
+});
+
+const Video = ({ url }) => {
+  return (
+    <VideoWrapper>
+      <Player src={url} fluid>
+        <BigPlayButton position="center" />
+        <ControlBar autoHide={false} />
+      </Player>
+    </VideoWrapper>
+  );
+};
+
 class Post extends Component {
   static propTypes = {
     post: PropTypes.object.isRequired
@@ -149,78 +227,57 @@ class Post extends Component {
     console.log(post.media);
 
     return (
-      <PostWrapper imageColors={post.imageColors} id={post.id}>
-        <PostContent>
-          {/* <Album> */}
-          {post.media.map(
-            (media, index) =>
-              media ? (
-                media.isVideo ? (
-                  <Player src={media.url} fluid key={media.id}>
-                    <BigPlayButton position="center" />
-                    <ControlBar autoHide={false} />
-                  </Player>
-                ) : (
-                  <PostImage src={media.url} key={media.id} />
-                )
-              ) : (
-                <div />
-              )
-          )}
-          {/* </Album> */}
-
-          <PostTitle imageColors={post.imageColors}>{post.title}</PostTitle>
-          <PostFooter>
-            <TimeAgo datetime={post.createdISO} />
-            <Divider>&mdash;</Divider>
-            <LinkWrapper>
-              by
-              <AuthorLink imageColors={post.imageColors}>
-                {post.author.name}
-              </AuthorLink>
-            </LinkWrapper>
-            <Divider>&mdash;</Divider>
-            <div>
-              Score: <Score imageColors={post.imageColors}>{post.score}</Score>
-            </div>
-          </PostFooter>
-
-          {doShowColorDemo && (
-            <ColorDemoContainer>
-              <ColorDemo
-                imageColors={post.imageColors}
-                color="vibrant"
-                title="vibrant"
-              />
-              <ColorDemo
-                imageColors={post.imageColors}
-                color="vibrantLight"
-                title="vibrantLight"
-              />
-              <ColorDemo
-                imageColors={post.imageColors}
-                color="vibrantDark"
-                title="vibrantDark"
-              />
-              <ColorDemo
-                imageColors={post.imageColors}
-                color="muted"
-                title="muted"
-              />
-              <ColorDemo
-                imageColors={post.imageColors}
-                color="mutedLight"
-                title="mutedLight"
-              />
-              <ColorDemo
-                imageColors={post.imageColors}
-                color="mutedDark"
-                title="mutedDark"
-              />
-            </ColorDemoContainer>
-          )}
-        </PostContent>
-      </PostWrapper>
+      <Album>
+        {post.media.map(
+          (media, index) =>
+            !media ? (
+              <h1>No suitable media found for {post.url}</h1>
+            ) : (
+              <PostWrapper key={media.id} imageColors={media.preview.colors}>
+                <PostContent>
+                  {media.isVideo ? (
+                    <Video url={media.url} />
+                  ) : (
+                    <PostImage
+                      src={media.url}
+                      imageColors={media.preview.colors}
+                      style={{
+                        ...borders[
+                          Math.round(Math.random(borders.length - 1) + 1)
+                        ]
+                      }}
+                    />
+                  )}
+                  <PostTitle imageColors={media.preview.colors}>
+                    <PostTitleLink
+                      href={`https://reddit.com${post.permalink}`}
+                      target="_blank"
+                    >
+                      {post.title}
+                    </PostTitleLink>
+                  </PostTitle>
+                  <PostFooter>
+                    <TimeAgo datetime={post.createdISO} />
+                    <Divider>&mdash;</Divider>
+                    <LinkWrapper>
+                      by
+                      <AuthorLink imageColors={media.preview.colors}>
+                        {post.author.name}
+                      </AuthorLink>
+                    </LinkWrapper>
+                    <Divider>&mdash;</Divider>
+                    <div>
+                      Score:{' '}
+                      <Score imageColors={media.preview.colors}>
+                        {post.score}
+                      </Score>
+                    </div>
+                  </PostFooter>
+                </PostContent>
+              </PostWrapper>
+            )
+        )}
+      </Album>
     );
   }
 }

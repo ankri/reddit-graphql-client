@@ -13,10 +13,13 @@ const Navbar = glamorous.div({
   borderBottom: '1px solid #000',
   backgroundColor: '#FFF',
   display: 'flex',
-  flexDirection: 'row'
+  flexDirection: 'row',
+  position: 'absolute',
+  top: '1rem',
+  left: '1rem'
 });
 
-const NavbarHeading = glamorous.h1({
+const NavbarHeading = glamorous.h3({
   margin: 0
 });
 
@@ -55,6 +58,12 @@ const TextInput = glamorous.input({
   padding: '0.5rem'
 });
 
+const ButtonWrapper = glamorous.div({
+  position: 'fixed',
+  bottom: '1rem',
+  left: '1rem'
+});
+
 class Subreddit extends Component {
   static propTypes = {
     subreddit: PropTypes.object,
@@ -83,29 +92,72 @@ class Subreddit extends Component {
 
     return (
       <div>
-        <Headroom disable>
-          <Navbar>
-            <NavbarHeading>
-              {subreddit.headerImage && (
-                <HeaderImage src={subreddit.headerImage.url} />
-              )}{' '}
-              r/{subreddit.name}
-            </NavbarHeading>
-            <ChangeSubredditButton
-              type="button"
-              onClick={() => changeSubreddit('random')}
+        {/* <Navbar>
+          <NavbarHeading>
+            {subreddit.headerImage && (
+              <HeaderImage src={subreddit.headerImage.url} />
+            )}{' '}
+            r/{subreddit.name}
+          </NavbarHeading>
+          <form onSubmit={this.goToSubreddit}>
+            <TextInput placeholder="go to subreddit" name="subreddit" />
+          </form> 
+        </Navbar> */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '1rem',
+            left: '1rem'
+          }}
+        >
+          {subreddit.headerImage.url && (
+            <div
+              className="card"
+              style={{ padding: '0.25rem', backgroundColor: '#FFF' }}
             >
-              random
-            </ChangeSubredditButton>
-            <form onSubmit={this.goToSubreddit}>
-              <TextInput placeholder="go to subreddit" name="subreddit" />
-            </form>
-          </Navbar>
-        </Headroom>
+              <img
+                src={subreddit.headerImage.url}
+                alt=""
+                className="no-responsive"
+                width={subreddit.headerImage.width}
+                height={subreddit.headerImage.height}
+              />
+            </div>
+          )}
+          <div
+            className="card"
+            style={{
+              marginTop: '0.5rem',
+              padding: '0.25rem',
+              backgroundColor: '#FFF'
+            }}
+          >
+            <h4 style={{ margin: 0 }}>r/{subreddit.name}</h4>
+          </div>
+        </div>
+        <div
+          className="card"
+          style={{
+            position: 'absolute',
+            top: '1rem',
+            right: '1rem',
+            backgroundColor: '#FFF',
+            padding: '0.25rem'
+          }}
+        />
+        <ButtonWrapper>
+          <ChangeSubredditButton onClick={() => changeSubreddit('random')}>
+            random
+          </ChangeSubredditButton>
+        </ButtonWrapper>
         {!this.state.isError && (
           <Content>
             <KeyboardNavigation posts={posts} />
-            {posts.map(post => <Post post={post} key={post.id} />)}
+            {posts.map(post => (
+              <div id={post.id} key={post.id}>
+                <Post post={post} />
+              </div>
+            ))}
             {posts.length === 0 && (
               <NoContent>
                 <h1>No posts found</h1>

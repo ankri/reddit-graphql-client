@@ -42,7 +42,8 @@ class KeyboardNavigation extends Component {
     const posts = this.props.posts.map(post => post.id);
 
     switch (event.code) {
-      case 'ArrowLeft':
+      case 'ArrowUp':
+        event.preventDefault();
         const previousIndex = posts.indexOf(this.state.selected) - 1;
         this.setState(
           previousState => ({
@@ -57,7 +58,8 @@ class KeyboardNavigation extends Component {
           }
         );
         break;
-      case 'ArrowRight':
+      case 'ArrowDown':
+        event.preventDefault();
         const nextIndex = posts.indexOf(this.state.selected) + 1;
         this.setState(
           previousState => ({

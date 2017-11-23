@@ -78,7 +78,7 @@ const SubredditWithData = graphql(SubredditQuery, {
     return {
       variables: {
         name: subredditName,
-        color: 'MutedLight'
+        color: 'LightMuted'
       }
     };
   }

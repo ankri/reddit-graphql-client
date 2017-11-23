@@ -21,6 +21,7 @@ export const query = `query Subreddit($name: String!, $color: String) {
         createdISO,
         score,
         url,
+        permalink,
         media {
           url
           height
@@ -35,7 +36,8 @@ export const query = `query Subreddit($name: String!, $color: String) {
               muted,
               mutedDark,
               mutedLight,
-              titleText(color: $color)
+              titleText(color: $color),
+              bodyText(color: $color)
             },
             height
             width
