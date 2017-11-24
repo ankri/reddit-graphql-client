@@ -5,6 +5,7 @@ import Headroom from 'react-headroom';
 
 import Post from './Post';
 import KeyboardNavigation from './KeyboardNavigation';
+import ImageNavigation from './ImageNavigation';
 
 const Navbar = glamorous.div({
   padding: '1.5rem',
@@ -63,6 +64,30 @@ const ButtonWrapper = glamorous.div({
   bottom: '1rem',
   left: '1rem'
 });
+
+const DirectionalArrow = glamorous.div(
+  {
+    position: 'fixed',
+    left: '3rem',
+    fontSize: '5rem',
+    color: 'rgba(65, 64, 62, 0.25)',
+    cursor: 'pointer',
+    ':hover': {
+      color: 'rgba(65, 64, 62, 1)'
+    }
+  },
+  ({ down }) => {
+    if (!!down) {
+      return {
+        bottom: '15vh'
+      };
+    } else {
+      return {
+        top: '15vh'
+      };
+    }
+  }
+);
 
 class Subreddit extends Component {
   static propTypes = {
@@ -151,25 +176,38 @@ class Subreddit extends Component {
           </ChangeSubredditButton>
         </ButtonWrapper>
         {!this.state.isError && (
-          <Content>
-            <KeyboardNavigation posts={posts} />
-            {posts.map(post => (
-              <div id={post.id} key={post.id}>
-                <Post post={post} />
-              </div>
-            ))}
-            {posts.length === 0 && (
-              <NoContent>
-                <h1>No posts found</h1>
-                <ChangeSubredditButton
-                  type="button"
-                  onClick={() => changeSubreddit('random')}
-                >
-                  Load random subreddit
-                </ChangeSubredditButton>
-              </NoContent>
+          <ImageNavigation posts={posts}>
+            {(goUp, goDown, goLeft, goRight) => (
+              <Content>
+                <KeyboardNavigation
+                  onUp={goUp}
+                  onDown={goDown}
+                  onLeft={goLeft}
+                  onRight={goRight}
+                />
+                <DirectionalArrow onClick={goUp}>▲</DirectionalArrow>
+                <DirectionalArrow down={true} onClick={goDown}>
+                  ▼
+                </DirectionalArrow>
+                {posts.map(post => (
+                  <div id={post.id} key={post.id}>
+                    <Post post={post} />
+                  </div>
+                ))}
+                {posts.length === 0 && (
+                  <NoContent>
+                    <h1>No posts found</h1>
+                    <ChangeSubredditButton
+                      type="button"
+                      onClick={() => changeSubreddit('randnsfw')}
+                    >
+                      Load random subreddit
+                    </ChangeSubredditButton>
+                  </NoContent>
+                )}
+              </Content>
             )}
-          </Content>
+          </ImageNavigation>
         )}
       </div>
     );

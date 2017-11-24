@@ -41,12 +41,21 @@ const PostTitle = glamorous.h3(
   },
   ({ imageColors }) => {
     if (imageColors) {
-      return {
-        color:
-          imageColors.bodyText ||
-          imageColors.titleText ||
-          imageColors.vibrantDark
-      };
+      if (
+        imageColors.mutedLight === null ||
+        imageColors.bodyText === imageColors.mutedLight
+      ) {
+        return {
+          color: '#000'
+        };
+      } else {
+        return {
+          color:
+            imageColors.bodyText ||
+            imageColors.titleText ||
+            imageColors.vibrantDark
+        };
+      }
     } else {
       return {
         color: '#FFF'
