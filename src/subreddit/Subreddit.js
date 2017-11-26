@@ -10,6 +10,7 @@ import NoContentToDisplay from './NoContentToDisplay';
 import SubredditName from './SubredditName';
 import HeaderImage from './HeaderImage';
 import VerticalNavigation from './VerticalNavigation';
+import LoadMorePosts from './LoadMorePosts';
 
 const Content = glamorous.div({
   width: '100vw'
@@ -41,13 +42,27 @@ const SubredditNamePosition = glamorous.div({
 class Subreddit extends Component {
   static propTypes = {
     subreddit: PropTypes.object,
-    changeSubreddit: PropTypes.func
+    changeSubreddit: PropTypes.func,
+    loadMore: PropTypes.func
   };
+
+  shouldComponentUpdate(nextProps) {
+    return (
+      this.props.subreddit.name !== nextProps.subreddit.name ||
+      this.props.subreddit.media.hot.length !==
+        nextProps.subreddit.media.hot.length
+    );
+  }
 
   goToSubreddit = event => {
     event.preventDefault();
     const newSubreddit = event.target.elements['subreddit'].value;
     this.props.changeSubreddit(newSubreddit);
+  };
+
+  loadMorePosts = () => {
+    const last = this.props.subreddit.media.hot.slice(-1).pop();
+    this.props.loadMore(last.name);
   };
 
   render() {
@@ -91,6 +106,7 @@ class Subreddit extends Component {
                     <Post post={post} />
                   </div>
                 ))}
+                <LoadMorePosts loadMore={this.loadMorePosts} />
               </Content>
             )}
           </PostNavigation>

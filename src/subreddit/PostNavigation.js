@@ -102,8 +102,19 @@ class PostNavigation extends Component {
     }
   };
 
-  shouldComponentUpdate(nextState, nextProps) {
-    return false;
+  shouldComponentUpdate(nextProps) {
+    return this.props.posts.length !== nextProps.posts.length;
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
+    this.setState({
+      selected:
+        (nextProps.posts && nextProps.posts[0] && nextProps.posts[0].id) || '',
+      postIds: nextProps.posts.map(post => post.id),
+      postPositions: [],
+      disableScroll: false
+    });
   }
 
   componentDidMount() {

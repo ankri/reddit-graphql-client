@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 
-export const query = `query Subreddit($name: String!, $color: String) {
+export const query = `query Subreddit($name: String!, $color: String, $after: String) {
   subreddit(name: $name) {
     name,
     headerImage {
@@ -15,8 +15,9 @@ export const query = `query Subreddit($name: String!, $color: String) {
       height
     },
     media {
-      hot {
+      hot(after: $after) {
         id,
+        name,
         title,
         createdISO,
         score,

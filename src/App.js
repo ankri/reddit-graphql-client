@@ -19,6 +19,31 @@ class SubredditLoader extends Component {
     }
   }
 
+  loadMore = after => {
+    if (this.props.data && this.props.data.fetchMore) {
+      this.props.data.fetchMore({
+        variables: {
+          ...this.props.data.variables,
+          after
+        },
+        updateQuery: (previousResult, { fetchMoreResult }) => {
+          return {
+            ...previousResult,
+            subreddit: {
+              ...previousResult.subreddit,
+              media: {
+                hot: [
+                  ...previousResult.subreddit.media.hot,
+                  ...fetchMoreResult.subreddit.media.hot
+                ]
+              }
+            }
+          };
+        }
+      });
+    }
+  };
+
   render() {
     const { loading, error, subreddit, variables } = this.props.data;
 
@@ -39,6 +64,7 @@ class SubredditLoader extends Component {
         <Subreddit
           subreddit={subreddit}
           changeSubreddit={this.props.changeSubreddit}
+          loadMore={this.loadMore}
         />
       );
     }
