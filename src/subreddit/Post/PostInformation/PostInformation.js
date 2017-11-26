@@ -1,6 +1,5 @@
 import React from 'react';
 import glamorous from 'glamorous';
-import PropTypes from 'prop-types';
 import TimeAgo from 'timeago-react';
 
 import Author from './Author';

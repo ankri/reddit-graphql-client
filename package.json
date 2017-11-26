@@ -13,15 +13,9 @@
     "react": "^16.1.0",
     "react-apollo": "^2.0.1",
     "react-dom": "^16.1.0",
-    "react-headroom": "^2.2.2",
-    "react-markdown": "^2.5.1",
     "react-scripts": "1.0.17",
     "redux": "^3.7.2",
     "timeago-react": "^2.0.0",
-    "typeface-merriweather": "0.0.43",
-    "typeface-open-sans": "0.0.43",
-    "typography": "^0.16.6",
-    "typography-theme-sutro": "^0.15.10",
     "video-react": "^0.8.9"
   },
   "scripts": {
@@ -37,9 +31,6 @@
     "prettier": "^1.8.2"
   },
   "lint-staged": {
-    "*.{js,json,css}": [
-      "prettier --write",
-      "git add"
-    ]
+    "*.{js,json,css}": ["prettier --write", "git add"]
   }
 }

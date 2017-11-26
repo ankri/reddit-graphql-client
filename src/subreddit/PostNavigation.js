@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class ImageNavigation extends Component {
+class PostNavigation extends Component {
   constructor(props) {
     super(props);
 
@@ -134,4 +134,4 @@ class ImageNavigation extends Component {
   }
 }
 
-export default ImageNavigation;
+export default PostNavigation;
