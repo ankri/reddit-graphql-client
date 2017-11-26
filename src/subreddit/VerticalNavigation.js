@@ -18,7 +18,7 @@ const VerticalNavigation = glamorous.div(
 );
 
 VerticalNavigation.propTypes = {
-  down: PropTypes.boolean
+  down: PropTypes.bool
 };
 
 export default VerticalNavigation;

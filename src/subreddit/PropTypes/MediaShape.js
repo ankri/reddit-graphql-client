@@ -4,7 +4,7 @@ import VibrantColors from './VibrantColorsShape';
 export default PropTypes.shape({
   height: PropTypes.number,
   id: PropTypes.string.isRequired,
-  isVideo: PropTypes.boolean,
+  isVideo: PropTypes.bool,
   preview: PropTypes.shape({
     colors: VibrantColors,
     width: PropTypes.number,

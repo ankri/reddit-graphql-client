@@ -16,7 +16,7 @@ const AlbumNavigation = glamorous.div(
 );
 
 AlbumNavigation.proptTypes = {
-  right: PropTypes.boolean
+  right: PropTypes.bool
 };
 
 export default AlbumNavigation;
