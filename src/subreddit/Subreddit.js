@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import glamorous from 'glamorous';
 import Headroom from 'react-headroom';
 
-import Post from './Post';
+import Post from './Post/Post';
 import KeyboardNavigation from './KeyboardNavigation';
 import ImageNavigation from './ImageNavigation';
 
@@ -62,31 +62,24 @@ const TextInput = glamorous.input({
 const ButtonWrapper = glamorous.div({
   position: 'fixed',
   bottom: '1rem',
-  left: '1rem'
+  left: '1rem',
+  zIndex: 100
 });
 
-const DirectionalArrow = glamorous.div(
+const VerticalNavigation = glamorous.div(
   {
+    zIndex: 20,
     position: 'fixed',
-    left: '3rem',
-    fontSize: '5rem',
-    color: 'rgba(65, 64, 62, 0.25)',
+    width: '100vw',
+    height: '5rem',
     cursor: 'pointer',
     ':hover': {
-      color: 'rgba(65, 64, 62, 1)'
+      backgroundColor: 'rgba(65, 64, 62, 0.25)'
     }
   },
-  ({ down }) => {
-    if (!!down) {
-      return {
-        bottom: '15vh'
-      };
-    } else {
-      return {
-        top: '15vh'
-      };
-    }
-  }
+  ({ down }) => ({
+    [down ? 'bottom' : 'top']: 0
+  })
 );
 
 class Subreddit extends Component {
@@ -117,17 +110,6 @@ class Subreddit extends Component {
 
     return (
       <div>
-        {/* <Navbar>
-          <NavbarHeading>
-            {subreddit.headerImage && (
-              <HeaderImage src={subreddit.headerImage.url} />
-            )}{' '}
-            r/{subreddit.name}
-          </NavbarHeading>
-          <form onSubmit={this.goToSubreddit}>
-            <TextInput placeholder="go to subreddit" name="subreddit" />
-          </form> 
-        </Navbar> */}
         <div
           style={{
             position: 'absolute',
@@ -138,7 +120,11 @@ class Subreddit extends Component {
           {subreddit.headerImage.url && (
             <div
               className="card"
-              style={{ padding: '0.25rem', backgroundColor: '#FFF' }}
+              style={{
+                padding: '0.25rem',
+                backgroundColor: '#FFF',
+                zIndex: 200
+              }}
             >
               <img
                 src={subreddit.headerImage.url}
@@ -154,22 +140,13 @@ class Subreddit extends Component {
             style={{
               marginTop: '0.5rem',
               padding: '0.25rem',
-              backgroundColor: '#FFF'
+              backgroundColor: '#FFF',
+              zIndex: 200
             }}
           >
             <h4 style={{ margin: 0 }}>r/{subreddit.name}</h4>
           </div>
         </div>
-        <div
-          className="card"
-          style={{
-            position: 'absolute',
-            top: '1rem',
-            right: '1rem',
-            backgroundColor: '#FFF',
-            padding: '0.25rem'
-          }}
-        />
         <ButtonWrapper>
           <ChangeSubredditButton onClick={() => changeSubreddit('random')}>
             random
@@ -185,10 +162,8 @@ class Subreddit extends Component {
                   onLeft={goLeft}
                   onRight={goRight}
                 />
-                <DirectionalArrow onClick={goUp}>▲</DirectionalArrow>
-                <DirectionalArrow down={true} onClick={goDown}>
-                  ▼
-                </DirectionalArrow>
+                <VerticalNavigation onClick={goUp} />
+                <VerticalNavigation down={true} onClick={goUp} />
                 {posts.map(post => (
                   <div id={post.id} key={post.id}>
                     <Post post={post} />
@@ -199,7 +174,7 @@ class Subreddit extends Component {
                     <h1>No posts found</h1>
                     <ChangeSubredditButton
                       type="button"
-                      onClick={() => changeSubreddit('randnsfw')}
+                      onClick={() => changeSubreddit('random')}
                     >
                       Load random subreddit
                     </ChangeSubredditButton>
