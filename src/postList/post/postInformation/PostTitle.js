@@ -1,7 +1,8 @@
 import React from 'react';
 import glamorous from 'glamorous';
 import PropTypes from 'prop-types';
-import VibrantColors from '../../PropTypes/VibrantColorsShape';
+
+import VibrantColors from '../../propTypes/VibrantColorsShape';
 
 const calculateTitleSize = length => {
   if (length > 175) {
@@ -72,9 +73,11 @@ const TitleLink = glamorous.a({
 
 const PostTitle = ({ colors, permalink, title }) => (
   <Title colors={colors} title={title}>
-    <TitleLink href={`https://reddit.com${permalink}`} target="_blank">
-      {title}
-    </TitleLink>
+    <TitleLink
+      href={permalink}
+      target="_blank"
+      dangerouslySetInnerHTML={{ __html: title }}
+    />
   </Title>
 );
 

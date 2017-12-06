@@ -1,13 +1,14 @@
 import React from 'react';
 import glamorous from 'glamorous';
+import PropTypes from 'prop-types';
 
-import PostShape from '../../PropTypes/PostShape';
-import VibrantColorsShape from '../../PropTypes/VibrantColorsShape';
+import PostShape from '../../propTypes/PostShape';
+import VibrantColorsShape from '../../propTypes/VibrantColorsShape';
 import AlbumNavigation from './AlbumNavigation';
 import NoMediaFound from './NoMediaFound';
 import Video from './Video';
 import Image from './Image';
-import PostInformation from '../PostInformation/PostInformation';
+import PostInformation from '../postInformation/PostInformation';
 
 const AlbumWrapper = glamorous.div({
   display: 'flex',
@@ -56,7 +57,7 @@ const Content = glamorous.div({
   maxHeight: '100%'
 });
 
-const Album = ({ post }) => (
+const Album = ({ post, showSubreddit }) => (
   <AlbumWrapper>
     {' '}
     {post.media.map(
@@ -77,7 +78,11 @@ const Album = ({ post }) => (
                   title={post.title}
                 />
               )}
-              <PostInformation post={post} media={media} />
+              <PostInformation
+                post={post}
+                media={media}
+                showSubreddit={showSubreddit}
+              />
             </Content>
           </Wrapper>
         )
@@ -86,7 +91,8 @@ const Album = ({ post }) => (
 );
 
 Album.propTypes = {
-  post: PostShape
+  post: PostShape,
+  showSubreddit: PropTypes.bool
 };
 
 export default Album;

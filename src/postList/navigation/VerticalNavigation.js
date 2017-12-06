@@ -8,6 +8,7 @@ const VerticalNavigation = glamorous.div(
     width: '100vw',
     height: '5rem',
     cursor: 'pointer',
+    transform: 'translateZ(0)',
     ':hover': {
       backgroundColor: 'rgba(65, 64, 62, 0.25)'
     }

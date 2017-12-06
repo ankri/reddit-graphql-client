@@ -1,8 +1,7 @@
 import React from 'react';
 import glamorous from 'glamorous';
-import PropTypes from 'prop-types';
 
-import SubredditButton from './SubredditButton';
+import SubredditButton from '../subreddit/SubredditButton';
 
 const NoContent = glamorous.div({
   display: 'flex',
@@ -13,17 +12,13 @@ const NoContent = glamorous.div({
   width: '100vw'
 });
 
-const NoContentToDisplay = ({ changeSubreddit }) => (
+const NoContentToDisplay = () => (
   <NoContent>
     <h1>No posts found</h1>
-    <SubredditButton changeSubreddit={changeSubreddit} subreddit="random">
+    <SubredditButton subreddit="randnsfw">
       Load random subreddit
     </SubredditButton>
   </NoContent>
 );
-
-NoContentToDisplay.propTypes = {
-  changeSubreddit: PropTypes.func.isRequired
-};
 
 export default NoContentToDisplay;

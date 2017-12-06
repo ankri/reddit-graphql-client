@@ -1,8 +1,8 @@
 import React from 'react';
 
-import PostShape from '../../PropTypes/PostShape';
-import MediaShape from '../../PropTypes/MediaShape';
-import PostInformation from '../PostInformation/PostInformation';
+import PostShape from '../../propTypes/PostShape';
+import MediaShape from '../../propTypes/MediaShape';
+import PostInformation from '../postInformation/PostInformation';
 
 const NoMediaFound = ({ post, media }) => (
   <div>

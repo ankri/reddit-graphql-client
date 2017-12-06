@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import glamorous from 'glamorous';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 
 const Button = glamorous.button({
   marginLeft: '1rem',
@@ -15,12 +16,19 @@ const Button = glamorous.button({
 
 class SubredditButton extends Component {
   static propTypes = {
-    changeSubreddit: PropTypes.func.isRequired,
     subreddit: PropTypes.string.isRequired
   };
 
-  handleClick = () => {
-    this.props.changeSubreddit(this.props.subreddit);
+  handleClick = async () => {
+    const { subreddit, history } = this.props;
+    if (subreddit === 'random' || subreddit === 'randnsfw') {
+      const response = await fetch(`/${subreddit}`);
+      const json = await response.json();
+      console.log(json.name);
+      history.push(`/r/${json.name}`);
+    } else {
+      history.push(`/r/${subreddit}`);
+    }
   };
 
   render() {
@@ -32,4 +40,4 @@ class SubredditButton extends Component {
   }
 }
 
-export default SubredditButton;
+export default withRouter(SubredditButton);

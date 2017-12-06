@@ -2,7 +2,7 @@ import React from 'react';
 import glamorous from 'glamorous';
 import PropTypes from 'prop-types';
 
-import VibrantColorsShape from '../../PropTypes/VibrantColorsShape';
+import VibrantColorsShape from '../../propTypes/VibrantColorsShape';
 
 const borders = [
   {

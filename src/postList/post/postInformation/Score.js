@@ -2,7 +2,7 @@ import React from 'react';
 import glamorous from 'glamorous';
 import PropTypes from 'prop-types';
 
-import VibrantColors from '../../PropTypes/VibrantColorsShape';
+import VibrantColors from '../../propTypes/VibrantColorsShape';
 
 const ColoredScore = glamorous.span({}, ({ colors }) => {
   if (colors) {

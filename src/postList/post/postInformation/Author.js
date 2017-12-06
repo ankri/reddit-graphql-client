@@ -1,14 +1,16 @@
 import React from 'react';
 import glamorous from 'glamorous';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
-import VibrantColors from '../../PropTypes/VibrantColorsShape';
+import VibrantColors from '../../propTypes/VibrantColorsShape';
 
-const AuthorLink = glamorous.a(
+const AuthorLink = glamorous.span(
   {
+    position: 'relative',
+    zIndex: 200,
     fontFamily: "'Open Sans', sans-serif",
-    fontWeight: 800,
-    marginLeft: '0.3rem'
+    fontWeight: 800
   },
   ({ colors }) => {
     if (colors) {
@@ -29,8 +31,10 @@ AuthorLink.propTypes = {
 
 const Author = ({ name, colors }) => (
   <div>
-    by
-    <AuthorLink colors={colors}>{name}</AuthorLink>
+    by{` `}
+    <Link to={`/u/${name}`}>
+      <AuthorLink colors={colors}>{name}</AuthorLink>
+    </Link>
   </div>
 );
 

@@ -2,19 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import glamorous from 'glamorous';
 
-import Post from './Post/Post';
-import KeyboardNavigation from './KeyboardNavigation';
-import PostNavigation from './PostNavigation';
 import SubredditButton from './SubredditButton';
-import NoContentToDisplay from './NoContentToDisplay';
 import SubredditName from './SubredditName';
 import HeaderImage from './HeaderImage';
-import VerticalNavigation from './VerticalNavigation';
-import LoadMorePosts from './LoadMorePosts';
-
-const Content = glamorous.div({
-  width: '100vw'
-});
+import PostList from '../postList/PostList';
 
 const TextInput = glamorous.input({
   marginLeft: '1rem',
@@ -22,95 +13,51 @@ const TextInput = glamorous.input({
   padding: '0.5rem'
 });
 
-const ChangeSubredditPosition = glamorous.div({
+const ChangeSubredditButtonContainer = glamorous.div({
   position: 'fixed',
   bottom: '1rem',
   left: '1rem',
   zIndex: 100
 });
 
-const HeaderImagePosition = glamorous.div({
+const HeaderImageContainer = glamorous.div({
   position: 'absolute',
   top: '1rem',
   left: '1rem'
 });
 
-const SubredditNamePosition = glamorous.div({
+const SubredditNameContainer = glamorous.div({
   marginTop: '0.5rem'
 });
 
 class Subreddit extends Component {
   static propTypes = {
     subreddit: PropTypes.object,
-    changeSubreddit: PropTypes.func,
     loadMore: PropTypes.func
-  };
-
-  shouldComponentUpdate(nextProps) {
-    return (
-      this.props.subreddit.name !== nextProps.subreddit.name ||
-      this.props.subreddit.media.hot.length !==
-        nextProps.subreddit.media.hot.length
-    );
-  }
-
-  goToSubreddit = event => {
-    event.preventDefault();
-    const newSubreddit = event.target.elements['subreddit'].value;
-    this.props.changeSubreddit(newSubreddit);
-  };
-
-  loadMorePosts = () => {
-    const last = this.props.subreddit.media.hot.slice(-1).pop();
-    this.props.loadMore(last.name);
   };
 
   render() {
     const { subreddit, changeSubreddit } = this.props;
     const posts = subreddit.media.hot.filter(post => post.media !== null);
 
+    // TODO add text input to change subreddit
     return (
       <div>
-        <HeaderImagePosition>
+        <HeaderImageContainer>
           {subreddit.headerImage.url && (
             <HeaderImage
               headerImage={subreddit.headerImage}
               subredditName={subreddit.name}
             />
           )}
-          <SubredditNamePosition>
+          <SubredditNameContainer>
             <SubredditName name={subreddit.name} />
-          </SubredditNamePosition>
-        </HeaderImagePosition>
-        <ChangeSubredditPosition>
-          <SubredditButton changeSubreddit={changeSubreddit} subreddit="random">
-            random
-          </SubredditButton>
-        </ChangeSubredditPosition>
-        {posts.length === 0 ? (
-          <NoContentToDisplay changeSubreddit={changeSubreddit} />
-        ) : (
-          <PostNavigation posts={posts}>
-            {(goUp, goDown, goLeft, goRight) => (
-              <Content>
-                <KeyboardNavigation
-                  onUp={goUp}
-                  onDown={goDown}
-                  onLeft={goLeft}
-                  onRight={goRight}
-                />
-                <VerticalNavigation onClick={goUp} />
-                <VerticalNavigation down={true} onClick={goUp} />
-                {posts.map(post => (
-                  <div id={post.id} key={post.id}>
-                    <Post post={post} />
-                  </div>
-                ))}
-                <LoadMorePosts loadMore={this.loadMorePosts} />
-              </Content>
-            )}
-          </PostNavigation>
-        )}
+          </SubredditNameContainer>
+        </HeaderImageContainer>
+        <ChangeSubredditButtonContainer>
+          <SubredditButton subreddit="random">random</SubredditButton>
+        </ChangeSubredditButtonContainer>
+        <PostList posts={posts} loadMore={this.props.loadMore} />
       </div>
     );
   }

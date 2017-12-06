@@ -2,7 +2,7 @@ import React from 'react';
 import glamorous from 'glamorous';
 import PropTypes from 'prop-types';
 
-import SubredditButton from './subreddit/SubredditButton';
+import SubredditButton from '../subreddit/SubredditButton';
 
 const Wrapper = glamorous.div({
   display: 'flex',
