@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import glamorous from 'glamorous';
 import PropTypes from 'prop-types';
 
@@ -57,42 +57,46 @@ const Content = glamorous.div({
   maxHeight: '100%'
 });
 
-const Album = ({ post, showSubreddit }) => (
-  <AlbumWrapper>
-    {' '}
-    {post.media.map(
-      (media, index) =>
-        !media ? (
-          <NoMediaFound media={media} post={post} />
-        ) : (
-          <Wrapper key={media.id} colors={media.preview.colors}>
-            {post.media.length > 1 && <AlbumNavigation />}
-            {post.media.length > 1 && <AlbumNavigation right={true} />}
-            <Content>
-              {media.isVideo ? (
-                <Video url={media.url} />
-              ) : (
-                <Image
-                  url={media.url}
-                  colors={media.preview.colors}
-                  title={post.title}
-                />
-              )}
-              <PostInformation
-                post={post}
-                media={media}
-                showSubreddit={showSubreddit}
-              />
-            </Content>
-          </Wrapper>
-        )
-    )}
-  </AlbumWrapper>
-);
+class Album extends PureComponent {
+  static propTypes = {
+    post: PostShape,
+    showSubreddit: PropTypes.bool
+  };
 
-Album.propTypes = {
-  post: PostShape,
-  showSubreddit: PropTypes.bool
-};
+  render() {
+    const { post, showSubreddit } = this.props;
+    return (
+      <AlbumWrapper>
+        {' '}
+        {post.media.map((media, index) =>
+          !media ? (
+            <NoMediaFound media={media} post={post} />
+          ) : (
+            <Wrapper key={media.id} colors={media.preview.colors}>
+              {post.media.length > 1 && <AlbumNavigation />}
+              {post.media.length > 1 && <AlbumNavigation right={true} />}
+              <Content>
+                {media.isVideo ? (
+                  <Video url={media.url} />
+                ) : (
+                  <Image
+                    url={media.url}
+                    colors={media.preview.colors}
+                    title={post.title}
+                  />
+                )}
+                <PostInformation
+                  post={post}
+                  media={media}
+                  showSubreddit={showSubreddit}
+                />
+              </Content>
+            </Wrapper>
+          )
+        )}
+      </AlbumWrapper>
+    );
+  }
+}
 
 export default Album;

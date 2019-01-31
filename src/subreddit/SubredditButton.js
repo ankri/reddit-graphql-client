@@ -16,11 +16,15 @@ const Button = glamorous.button({
 
 class SubredditButton extends Component {
   static propTypes = {
-    subreddit: PropTypes.string.isRequired
+    subreddit: PropTypes.string.isRequired,
+    children: PropTypes.node
   };
 
   handleClick = async () => {
     const { subreddit, history } = this.props;
+
+    // the server can correctly load a random subreddit but apparently appollo's client cache
+    // sees `random` as a key and does not correctly resolve to a random subreddit
     if (subreddit === 'random' || subreddit === 'randnsfw') {
       const response = await fetch(`/${subreddit}`);
       const json = await response.json();

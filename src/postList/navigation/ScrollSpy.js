@@ -1,10 +1,10 @@
-import { Component } from 'react';
+import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
 import { postIdFromHash } from '../../utils/HashUtils';
 
-class ScrollSpy extends Component {
+class ScrollSpy extends PureComponent {
   timer = undefined;
 
   static propTypes = {
@@ -30,6 +30,7 @@ class ScrollSpy extends Component {
     if (post && post.id !== postIdFromHash(this.props.location.hash)) {
       this.props.history.replace(
         {
+          search: this.props.history.location.search,
           hash: post.id
         },
         {

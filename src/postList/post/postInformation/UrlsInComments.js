@@ -34,7 +34,7 @@ Badge.propTypes = {
 const PopOverWrapper = glamorous.div({
   position: 'absolute',
   bottom: '2rem',
-  right: '-8rem'
+  right: '-25vw'
 });
 
 const PopOverBody = glamorous.div({
@@ -51,16 +51,17 @@ const PopOverBody = glamorous.div({
   paddingBottom: '1rem'
 });
 
-const UrlList = glamorous.ul({
+const UrlList = glamorous.table({
   marginLeft: 0
 });
 
-const UrlListItem = glamorous.li({
-  ':before': {
-    content: 'none'
-  },
-  display: 'flex',
-  textIndent: 0
+const UrlListRow = glamorous.tr({});
+const UrlListCell = glamorous.td({
+  padding: '0.5rem',
+  whiteSpace: 'nowrap',
+  ':last-child': {
+    width: '100%'
+  }
 });
 
 class PopOver extends Component {
@@ -78,22 +79,35 @@ class PopOver extends Component {
       <PopOverWrapper>
         <PopOverBody>
           <UrlList>
-            {urls.map((url, index) => (
-              <UrlListItem key={`${post.id}-url-${index}`}>
-                <Badge className="badge" colors={media.preview.colors}>
-                  {url.score} &uarr;
-                </Badge>{' '}
-                <Divider>-</Divider>
-                <Author name={url.author} colors={media.preview.colors} />
-                <Divider>-</Divider>
-                <a
-                  href={url.url}
-                  target={url.url.indexOf('/r/') === 0 ? '_self' : '_blank'}
-                  rel="nofollow"
-                  dangerouslySetInnerHTML={{ __html: url.title }}
-                />
-              </UrlListItem>
-            ))}
+            <thead>
+              <tr>
+                <th>Votes</th>
+                <th>Author</th>
+                <th>Link</th>
+              </tr>
+            </thead>
+            <tbody>
+              {urls.map((url, index) => (
+                <UrlListRow key={`${post.id}-url-${index}`}>
+                  <UrlListCell>
+                    <Badge className="badge" colors={media.preview.colors}>
+                      {url.score} &uarr;
+                    </Badge>{' '}
+                  </UrlListCell>
+                  <UrlListCell>
+                    <Author name={url.author} colors={media.preview.colors} />
+                  </UrlListCell>
+                  <UrlListCell>
+                    <a
+                      href={url.url}
+                      target={url.url.indexOf('/r/') === 0 ? '_self' : '_blank'}
+                      rel="nofollow"
+                      dangerouslySetInnerHTML={{ __html: url.title }}
+                    />
+                  </UrlListCell>
+                </UrlListRow>
+              ))}
+            </tbody>
           </UrlList>
         </PopOverBody>
       </PopOverWrapper>

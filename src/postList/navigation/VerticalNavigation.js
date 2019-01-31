@@ -6,7 +6,7 @@ const VerticalNavigation = glamorous.div(
     zIndex: 20,
     position: 'fixed',
     width: '100vw',
-    height: '5rem',
+    height: '3rem',
     cursor: 'pointer',
     transform: 'translateZ(0)',
     ':hover': {

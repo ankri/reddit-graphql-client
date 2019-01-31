@@ -13,7 +13,7 @@ const TextInput = glamorous.input({
   padding: '0.5rem'
 });
 
-const ChangeSubredditButtonContainer = glamorous.div({
+const RandomSubredditButtonContainer = glamorous.div({
   position: 'fixed',
   bottom: '1rem',
   left: '1rem',
@@ -39,6 +39,7 @@ class Subreddit extends Component {
   render() {
     const { subreddit, changeSubreddit } = this.props;
     const posts = subreddit.media.hot.filter(post => post.media !== null);
+    console.log(posts);
 
     // TODO add text input to change subreddit
     return (
@@ -54,9 +55,10 @@ class Subreddit extends Component {
             <SubredditName name={subreddit.name} />
           </SubredditNameContainer>
         </HeaderImageContainer>
-        <ChangeSubredditButtonContainer>
+        <RandomSubredditButtonContainer>
+          <SubredditButton subreddit="randnsfw">random</SubredditButton>
           <SubredditButton subreddit="random">random</SubredditButton>
-        </ChangeSubredditButtonContainer>
+        </RandomSubredditButtonContainer>
         <PostList posts={posts} loadMore={this.props.loadMore} />
       </div>
     );

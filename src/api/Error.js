@@ -16,7 +16,7 @@ const Wrapper = glamorous.div({
 const Error = ({ error, subreddit, changeSubreddit }) => (
   <Wrapper>
     <h1>Error fetching {subreddit}</h1>
-    <p>{error.toString()}</p>
+    <p>{`${error}`}</p>
     <SubredditButton changeSubreddit={changeSubreddit} subreddit="random">
       random
     </SubredditButton>

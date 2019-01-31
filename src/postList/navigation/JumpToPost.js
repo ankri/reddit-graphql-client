@@ -40,6 +40,7 @@ class JumpToPost extends Component {
         () => {
           history.replace(
             {
+              search: history.location.search,
               hash: postIdFromHash(location.hash)
             },
             {
@@ -59,6 +60,7 @@ class JumpToPost extends Component {
       const id = nextProps.postIds[0];
       history.replace(
         {
+          search: history.location.search,
           hash: id
         },
         {

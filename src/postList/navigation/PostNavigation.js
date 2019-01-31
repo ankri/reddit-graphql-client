@@ -16,6 +16,7 @@ class PostNavigation extends Component {
     const nextId =
       postIds[currentIndex - 1 < 0 ? postIds.length - 1 : currentIndex - 1];
     history.replace({
+      search: history.location.search,
       hash: nextId
     });
   };
@@ -27,6 +28,7 @@ class PostNavigation extends Component {
     const nextId =
       postIds[(currentIndex + 1) % postIds.length === 0 ? 0 : currentIndex + 1];
     history.replace({
+      search: history.location.search,
       hash: nextId
     });
   };

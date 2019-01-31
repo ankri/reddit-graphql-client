@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import glamorous from 'glamorous';
 
@@ -14,7 +14,7 @@ const Content = glamorous.div({
   width: '100vw'
 });
 
-class PostListViewport extends Component {
+class PostListViewport extends PureComponent {
   state = {
     postPositions: []
   };

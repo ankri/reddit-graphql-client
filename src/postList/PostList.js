@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -9,7 +9,7 @@ import PostListViewport from './PostListViewport';
 
 import PostShape from './propTypes/PostShape';
 
-class PostList extends Component {
+class PostList extends PureComponent {
   static propTypes = {
     posts: PropTypes.arrayOf(PostShape),
     loadMore: PropTypes.func,
