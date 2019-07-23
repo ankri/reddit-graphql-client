@@ -17,7 +17,7 @@
     "react-scripts": "^3.0.1",
     "redux": "^4.0.1",
     "timeago-react": "^2.0.1",
-    "video-react": "^0.13.7"
+    "video-react": "^0.14.0"
   },
   "scripts": {
     "start": "react-scripts start",
